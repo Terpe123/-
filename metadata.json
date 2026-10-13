@@ -1,0 +1,6 @@
+{
+  "name": "今天吃什麼？",
+  "description": "簡約清爽的食物隨機抽選拉霸機，固定 16 種餐點隨機一鍵抽選，幫你快速決定今天吃什麼。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
