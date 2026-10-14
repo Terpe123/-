@@ -1,21 +1,1077 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>今天吃什麼？ - 食物隨機抽選拉霸機</title>
-    <meta name="description" content="不知道吃什麼？讓拉霸機幫你決定！16 種精選美味餐點隨機抽選，簡約清爽無負擔。" />
-    <meta property="og:title" content="今天吃什麼？ - 食物隨機抽選拉霸機" />
-    <meta property="og:description" content="不知道吃什麼？讓拉霸機幫你決定！16 種精選美味餐點隨機抽選，簡約清爽無負擔。" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>今天吃什麼？ - 食物隨機抽選拉霸機</title>
+  <meta name="description" content="不知道吃什麼？讓拉霸機幫你決定！16 種精選美味餐點隨機抽選，簡約清爽無負擔。" />
+  <meta property="og:title" content="今天吃什麼？ - 食物隨機抽選拉霸機" />
+  <meta property="og:description" content="不知道吃什麼？讓拉霸機幫你決定！16 種精選美味餐點隨機抽選，簡約清爽無負擔。" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    button {
+      font-family: inherit;
+    }
 
+    /* Header */
+    header {
+      width: 100%;
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+    .brand-sub {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-left: 0.5rem;
+    }
+    @media (max-width: 640px) {
+      .brand-sub { display: none; }
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .icon-btn {
+      background: none;
+      border: none;
+      padding: 0.5rem;
+      color: #64748b;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .icon-btn:hover {
+      color: #0f172a;
+      background-color: #e2e8f0;
+    }
+    .icon-btn:focus-visible {
+      outline: 2px solid #f97316;
+    }
+    .list-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #475569;
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .list-btn:hover {
+      color: #0f172a;
+      background: #f1f5f9;
+    }
+    .list-btn:focus-visible {
+      outline: 2px solid #f97316;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 36rem;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 640px) {
+      h1 { font-size: 1.875rem; }
+    }
+    .subtitle {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Slot Machine Housing */
+    .slot-housing-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 26rem;
+      margin: 0.5rem 0 1.25rem;
+      user-select: none;
+    }
+    .slot-housing {
+      position: relative;
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    .slot-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0.75rem;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .dot-group {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 9999px;
+    }
+    .dot-amber { background: #fbbf24; }
+    .dot-orange { background: #fb923c; }
+    .dot-slate { background: #e2e8f0; }
+    .slot-header-text {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      text-transform: uppercase;
+      margin-left: 0.25rem;
+    }
+    .slot-sub-text {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    /* Reel Viewport Window */
+    .reel-viewport-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .reel-viewport {
+      position: relative;
+      width: 100%;
+      height: 120px;
+      background: #f8fafc;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 2px solid #e2e8f0;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+    .depth-gradient-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2.5rem;
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.08), transparent);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .depth-gradient-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2.5rem;
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.08), transparent);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .center-guides {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      height: 3.5rem;
+      border-top: 1px solid rgba(249, 115, 22, 0.25);
+      border-bottom: 1px solid rgba(249, 115, 22, 0.25);
+      background: rgba(255, 237, 213, 0.35);
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.5rem;
+    }
+    .guide-pointer {
+      color: #f97316;
+      font-size: 0.75rem;
+      font-weight: 900;
+    }
+    .reel-strip {
+      width: 100%;
+      will-change: transform;
+    }
+    .reel-item {
+      width: 100%;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0 1rem;
+    }
+    .reel-emoji {
+      font-size: 2.75rem;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+    }
+    .reel-text-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .reel-food-name {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #1e293b;
+      letter-spacing: -0.02em;
+    }
+    .reel-food-sub {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    /* Mechanical Lever */
+    .lever-wrapper {
+      position: absolute;
+      right: -2.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+    }
+    @media (min-width: 640px) {
+      .lever-wrapper { right: -2.75rem; }
+    }
+    .lever-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      outline: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    .lever-btn:focus-visible {
+      outline: 2px solid #f97316;
+      border-radius: 9999px;
+    }
+    .lever-base {
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 9999px;
+      background: #cbd5e1;
+      border: 2px solid #94a3b8;
+    }
+    .lever-stick {
+      width: 0.5rem;
+      height: 3.5rem;
+      background: linear-gradient(to right, #cbd5e1, #f8fafc, #94a3b8);
+      border-radius: 9999px;
+      transform-origin: bottom center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .lever-ball {
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 30% 30%, #fb923c, #ea580c 70%, #9a3412);
+      border: 2px solid white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lever-ball-shine {
+      width: 0.4rem;
+      height: 0.4rem;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 9999px;
+      transform: translate(-3px, -3px);
+    }
+
+    .slot-footer {
+      margin-top: 0.875rem;
+      padding-top: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: #94a3b8;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    /* Main CTA Button */
+    .cta-container {
+      width: 100%;
+      max-width: 26rem;
+      margin: 0.5rem 0 1rem;
+    }
+    .primary-btn {
+      width: 100%;
+      padding: 1rem 2rem;
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: white;
+      background: #f97316;
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.28);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .primary-btn:hover:not(:disabled) {
+      background: #ea580c;
+      box-shadow: 0 10px 24px rgba(249, 115, 22, 0.38);
+      transform: translateY(-2px);
+    }
+    .primary-btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+    .primary-btn:disabled {
+      background: #fdba74;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    .primary-btn:focus-visible {
+      outline: 4px solid rgba(249, 115, 22, 0.4);
+    }
+    .btn-hint {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-top: 0.5rem;
+    }
+
+    /* Result Box */
+    .result-box-container {
+      width: 100%;
+      max-width: 26rem;
+      min-height: 105px;
+      margin-bottom: 0.75rem;
+      transition: opacity 0.3s;
+    }
+    .result-card {
+      background: white;
+      border: 1px solid #fed7aa;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.375rem;
+    }
+    .result-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #ea580c;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .result-title {
+      font-size: 1.625rem;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+    .result-food-highlight {
+      color: #ea580c;
+    }
+    .result-sub {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    .copy-btn {
+      margin-top: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #334155;
+      background: #f1f5f9;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    .placeholder-card {
+      padding: 1.25rem;
+      border: 1px dashed #cbd5e1;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 90px;
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      max-width: 24rem;
+      margin: 0.5rem auto 0;
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      width: 100%;
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 1.25rem 1rem;
+      border-top: 1px solid rgba(226, 232, 240, 0.8);
+      font-size: 0.75rem;
+      color: #64748b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: center;
+    }
+    @media (min-width: 640px) {
+      footer {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+      }
+    }
+    .footer-author {
+      font-weight: 600;
+      color: #475569;
+    }
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.7rem;
+      color: #94a3b8;
+    }
+    .footer-link-btn {
+      color: #ea580c;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-dialog {
+      background: white;
+      width: 100%;
+      max-width: 32rem;
+      max-height: 85vh;
+      border-radius: 1.5rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.95);
+      transition: transform 0.2s ease;
+    }
+    .modal-backdrop.open .modal-dialog {
+      transform: scale(1);
+    }
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #f1f5f9;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .modal-desc {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+    .modal-body {
+      padding: 1.25rem;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.625rem;
+    }
+    .food-card {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      padding: 0.625rem 0.75rem;
+      border-radius: 0.875rem;
+      border: 1px solid #f1f5f9;
+      background: white;
+      transition: all 0.15s;
+    }
+    .food-card.active {
+      background: #fff7ed;
+      border-color: #fdba74;
+    }
+    .food-id {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #94a3b8;
+      width: 1.5rem;
+      text-align: center;
+    }
+    .food-emoji {
+      font-size: 1.5rem;
+    }
+    .food-info {
+      text-align: left;
+      overflow: hidden;
+    }
+    .food-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .food-cat {
+      font-size: 0.6875rem;
+      color: #64748b;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .modal-footer {
+      padding: 0.875rem 1.5rem;
+      background: #f8fafc;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header>
+    <div style="display: flex; align-items: center;">
+      <span class="brand-title">今天吃什麼？</span>
+      <span class="brand-sub">食物隨機抽選拉霸機</span>
+    </div>
+    <div class="header-actions">
+      <button id="muteBtn" class="icon-btn" aria-label="切換音效" title="開啟/關閉音效">
+        <svg id="soundOnIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+        <svg id="soundOffIcon" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+      </button>
+      <button id="openListBtn" class="list-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"></line><line x1="10" y1="12" x2="21" y2="12"></line><line x1="10" y1="18" x2="21" y2="18"></line><path d="M4 6h1v4"></path><path d="M4 10h2"></path><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path></svg>
+        <span>16 種餐點</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- 1. 網站標題 -->
+    <h1>今天吃什麼？</h1>
+
+    <!-- 2. 簡短說明 -->
+    <p class="subtitle">不知道吃什麼？讓拉霸機幫你決定！</p>
+
+    <!-- 3. 拉霸視窗 -->
+    <div class="slot-housing-wrap">
+      <div class="slot-housing">
+        <div class="slot-header">
+          <div class="dot-group">
+            <span class="dot dot-amber"></span>
+            <span class="dot dot-orange"></span>
+            <span class="dot dot-slate"></span>
+            <span class="slot-header-text">SINGLE REEL · 1/16 PROB</span>
+          </div>
+          <span class="slot-sub-text">SLOT 16 FOODS</span>
+        </div>
+
+        <div class="reel-viewport-container">
+          <div class="reel-viewport" id="reelViewport">
+            <div class="depth-gradient-top"></div>
+            <div class="depth-gradient-bottom"></div>
+            <div class="center-guides">
+              <span class="guide-pointer">▶</span>
+              <span class="guide-pointer">◀</span>
+            </div>
+            <div class="reel-strip" id="reelStrip">
+              <!-- Dynamically rendered items -->
+            </div>
+          </div>
+
+          <!-- Mechanical Lever Handle -->
+          <div class="lever-wrapper">
+            <button id="leverBtn" class="lever-btn" aria-label="拉動把手開始抽選" title="點擊拉桿開始抽選">
+              <div class="lever-base"></div>
+              <div class="lever-stick" id="leverStick"></div>
+              <div class="lever-ball" id="leverBall">
+                <div class="lever-ball-shine"></div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="slot-footer">
+          <span>單一視窗滾輪</span>
+          <span>均等機率 6.25%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 抽選按鈕 -->
+    <div class="cta-container">
+      <button id="spinBtn" class="primary-btn">今天吃什麼？</button>
+      <div class="btn-hint">按 Enter 或空白鍵亦可快速啟動抽選</div>
+    </div>
+
+    <!-- 5. 結果區 (F03: 格式為「今天就吃：牛肉麵！」) -->
+    <div id="resultBox" class="result-box-container">
+      <div class="placeholder-card" id="resultPlaceholder">
+        點擊上方按鈕或拉桿，為你決定今天餐點
+      </div>
+      <div class="result-card" id="resultCard" style="display: none;">
+        <div class="result-tag">✨ 拉霸機推薦結果</div>
+        <div class="result-title">
+          今天就吃：<span id="resultFoodName" class="result-food-highlight">牛肉麵</span>！
+        </div>
+        <div class="result-sub" id="resultFoodSub">濃郁紅燒或清燉湯頭配厚切牛肉</div>
+        <button id="copyBtn" class="copy-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+          <span id="copyBtnText">複製結果文字</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 6. 提醒文字 -->
+    <p class="disclaimer">
+      提醒：結果僅供用餐靈感，請依飲食禁忌與實際供餐情況選擇
+    </p>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div>
+      <strong>今天吃什麼？</strong> · 食物隨機抽選拉霸機 · 
+      <span class="footer-author">NCNU 林恩澤 113321035 資工三</span>
+    </div>
+    <div class="footer-links">
+      <span>16 種固定餐點無篩選</span>
+      <span>獨立隨機抽選</span>
+      <button id="openFooterListBtn" class="footer-link-btn">檢視全部名單</button>
+    </div>
+  </footer>
+
+  <!-- Modal: Fixed 16 Food List -->
+  <div class="modal-backdrop" id="foodModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">固定 16 種餐點名單</div>
+          <div class="modal-desc">依規格設定固定餐點，每種抽中機率皆均等為 1/16 (6.25%)</div>
+        </div>
+        <button id="closeModalBtn" class="icon-btn" aria-label="關閉名單">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modalFoodList">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="modal-footer">
+        <span>不提供新增、修改或刪除，保持極簡公平</span>
+        <button id="closeModalBtn2" class="list-btn">了解關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // 16 Fixed Foods
+    const FOOD_LIST = [
+      { id: 1, name: '牛肉麵', category: '麵食', emoji: '🍜', subtitle: '濃郁紅燒或清燉湯頭配厚切牛肉' },
+      { id: 2, name: '滷肉飯', category: '飯食', emoji: '🍚', subtitle: '鹹香油亮肉燥淋上熱騰騰白飯' },
+      { id: 3, name: '炒飯', category: '飯食', emoji: '🍳', subtitle: '粒粒分明鍋氣十足的黃金炒飯' },
+      { id: 4, name: '炒麵', category: '麵食', emoji: '🍝', subtitle: '大火快炒肉絲高麗菜香氣四溢' },
+      { id: 5, name: '水餃', category: '麵點', emoji: '🥟', subtitle: '皮薄餡多汁水飽滿的現煮水餃' },
+      { id: 6, name: '鍋貼', category: '麵點', emoji: '🥟', subtitle: '金黃酥脆冰花底與香濃肉餡' },
+      { id: 7, name: '拉麵', category: '日式', emoji: '🍜', subtitle: '濃郁豚骨或醬油湯底搭配叉燒' },
+      { id: 8, name: '咖哩飯', category: '飯食', emoji: '🍛', subtitle: '香濃醇厚日式咖哩與軟嫩肉塊' },
+      { id: 9, name: '便當', category: '台式', emoji: '🍱', subtitle: '排骨雞腿經典主菜配三樣豐富配菜' },
+      { id: 10, name: '雞肉飯', category: '飯食', emoji: '🍗', subtitle: '鮮嫩雞肉絲淋上香醇蔥油雞汁' },
+      { id: 11, name: '火鍋', category: '鍋物', emoji: '🍲', subtitle: '熱氣騰騰豐富肉盤與鮮甜時蔬' },
+      { id: 12, name: '壽司', category: '日式', emoji: '🍣', subtitle: '鮮美生魚片與醋飯的完美平衡' },
+      { id: 13, name: '漢堡', category: '美式', emoji: '🍔', subtitle: '厚實多汁肉排與融化起司生菜' },
+      { id: 14, name: '披薩', category: '義式', emoji: '🍕', subtitle: '牽絲起司搭配酥脆現烤薄脆餅皮' },
+      { id: 15, name: '義大利麵', category: '義式', emoji: '🍝', subtitle: '彈牙麵條裹滿濃郁白醬或紅醬' },
+      { id: 16, name: '韓式拌飯', category: '韓式', emoji: '🥣', subtitle: '熱石鍋煎出鍋巴拌入辣醬與時蔬' },
+    ];
+
+    const ITEM_HEIGHT = 120;
+    let isSpinning = false;
+    let hasSpun = false;
+    let currentFood = FOOD_LIST[0];
+    let isMuted = localStorage.getItem('slot_muted') === 'true';
+
+    // Elements
+    const reelStrip = document.getElementById('reelStrip');
+    const spinBtn = document.getElementById('spinBtn');
+    const leverBtn = document.getElementById('leverBtn');
+    const leverStick = document.getElementById('leverStick');
+    const leverBall = document.getElementById('leverBall');
+    const resultPlaceholder = document.getElementById('resultPlaceholder');
+    const resultCard = document.getElementById('resultCard');
+    const resultFoodName = document.getElementById('resultFoodName');
+    const resultFoodSub = document.getElementById('resultFoodSub');
+    const copyBtn = document.getElementById('copyBtn');
+    const copyBtnText = document.getElementById('copyBtnText');
+    const muteBtn = document.getElementById('muteBtn');
+    const soundOnIcon = document.getElementById('soundOnIcon');
+    const soundOffIcon = document.getElementById('soundOffIcon');
+    const foodModal = document.getElementById('foodModal');
+    const openListBtn = document.getElementById('openListBtn');
+    const openFooterListBtn = document.getElementById('openFooterListBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const closeModalBtn2 = document.getElementById('closeModalBtn2');
+    const modalFoodList = document.getElementById('modalFoodList');
+
+    // Web Audio API
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTick(pitch = 1) {
+      if (isMuted) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320 * pitch, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+      } catch (e) {}
+    }
+
+    function playLever() {
+      if (isMuted) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.12);
+      } catch (e) {}
+    }
+
+    function playWin() {
+      if (isMuted) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0, now + idx * 0.08);
+          gain.gain.linearRampToValueAtTime(0.14, now + idx * 0.08 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.36);
+        });
+      } catch (e) {}
+    }
+
+    function updateAudioIcon() {
+      if (isMuted) {
+        soundOnIcon.style.display = 'none';
+        soundOffIcon.style.display = 'block';
+      } else {
+        soundOnIcon.style.display = 'block';
+        soundOffIcon.style.display = 'none';
+      }
+    }
+    updateAudioIcon();
+
+    muteBtn.addEventListener('click', () => {
+      isMuted = !isMuted;
+      localStorage.setItem('slot_muted', isMuted);
+      updateAudioIcon();
+    });
+
+    // Initial reel item rendering
+    function renderReelItems(items) {
+      reelStrip.innerHTML = items.map(food => `
+        <div class="reel-item">
+          <span class="reel-emoji">${food.emoji}</span>
+          <div class="reel-text-group">
+            <span class="reel-food-name">${food.name}</span>
+            <span class="reel-food-sub">${food.subtitle}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+    renderReelItems([currentFood]);
+
+    // Modal List Rendering
+    function renderModalList() {
+      modalFoodList.innerHTML = FOOD_LIST.map(food => {
+        const isCurrent = currentFood && currentFood.id === food.id;
+        return `
+          <div class="food-card ${isCurrent ? 'active' : ''}">
+            <span class="food-id">${String(food.id).padStart(2, '0')}</span>
+            <span class="food-emoji">${food.emoji}</span>
+            <div class="food-info">
+              <div class="food-name">${food.name}</div>
+              <div class="food-cat">${food.category} · ${food.subtitle}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Modal triggers
+    function openModal() {
+      renderModalList();
+      foodModal.classList.add('open');
+    }
+    function closeModal() {
+      foodModal.classList.remove('open');
+    }
+    openListBtn.addEventListener('click', openModal);
+    openFooterListBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    closeModalBtn2.addEventListener('click', closeModal);
+    foodModal.addEventListener('click', (e) => {
+      if (e.target === foodModal) closeModal();
+    });
+
+    // Spin function (F01, F02, F03, F04)
+    function startSpin() {
+      if (isSpinning) return;
+      isSpinning = true;
+
+      // Pull lever animation
+      playLever();
+      leverStick.style.transform = 'rotate(35deg) scaleY(0.65)';
+      leverBall.style.transform = 'translateY(18px)';
+      setTimeout(() => {
+        leverStick.style.transform = 'rotate(0deg) scaleY(1)';
+        leverBall.style.transform = 'translateY(0)';
+      }, 350);
+
+      // Random target from 16 foods (1/16 prob, independent)
+      const targetIndex = Math.floor(Math.random() * FOOD_LIST.length);
+      const targetFood = FOOD_LIST[targetIndex];
+
+      // Update button state (F02)
+      spinBtn.disabled = true;
+      spinBtn.textContent = '正在幫你選……';
+      resultPlaceholder.textContent = '滾輪旋轉中，即將出爐……';
+      resultCard.style.display = 'none';
+      resultPlaceholder.style.display = 'flex';
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        setTimeout(() => {
+          currentFood = targetFood;
+          renderReelItems([targetFood]);
+          onSpinFinished(targetFood);
+        }, 400);
+        return;
+      }
+
+      // Build strip sequence: starting food + 28 random intermediate + target
+      const strip = [currentFood];
+      for (let i = 0; i < 28; i++) {
+        strip.push(FOOD_LIST[Math.floor(Math.random() * FOOD_LIST.length)]);
+      }
+      strip.push(targetFood);
+
+      renderReelItems(strip);
+      reelStrip.style.transition = 'none';
+      reelStrip.style.transform = 'translate3d(0, 0, 0)';
+
+      // Trigger animation
+      requestAnimationFrame(() => {
+        const finalY = -(strip.length - 1) * ITEM_HEIGHT;
+        reelStrip.style.transition = 'transform 2.5s cubic-bezier(0.12, 0.85, 0.22, 1)';
+        reelStrip.style.transform = `translate3d(0, ${finalY}px, 0)`;
+
+        // Ticking audio
+        let tickCount = 0;
+        const maxTicks = 22;
+        const startTime = Date.now();
+        const duration = 2500;
+
+        function tick() {
+          const elapsed = Date.now() - startTime;
+          if (elapsed >= duration || tickCount >= maxTicks) return;
+          const p = elapsed / duration;
+          playTick(Math.max(0.7, 1.3 - p * 0.6));
+          tickCount++;
+          setTimeout(tick, 40 + Math.pow(p, 2.5) * 280);
+        }
+        setTimeout(tick, 50);
+
+        setTimeout(() => {
+          currentFood = targetFood;
+          renderReelItems([targetFood]);
+          reelStrip.style.transition = 'none';
+          reelStrip.style.transform = 'translate3d(0, 0, 0)';
+          onSpinFinished(targetFood);
+        }, 2520);
+      });
+    }
+
+    function onSpinFinished(food) {
+      isSpinning = false;
+      hasSpun = true;
+      playWin();
+
+      // F04: Button becomes "再抽一次"
+      spinBtn.disabled = false;
+      spinBtn.textContent = '再抽一次';
+
+      // F03: Results format 「今天就吃：牛肉麵！」
+      resultFoodName.textContent = food.name;
+      resultFoodSub.textContent = food.subtitle;
+      resultPlaceholder.style.display = 'none';
+      resultCard.style.display = 'flex';
+      copyBtnText.textContent = '複製結果文字';
+    }
+
+    spinBtn.addEventListener('click', startSpin);
+    leverBtn.addEventListener('click', startSpin);
+
+    // Keyboard support: Enter / Spacebar
+    window.addEventListener('keydown', (e) => {
+      if (foodModal.classList.contains('open')) return;
+      if (e.code === 'Space' && e.target.tagName !== 'BUTTON') {
+        e.preventDefault();
+        startSpin();
+      }
+    });
+
+    // Copy result
+    copyBtn.addEventListener('click', () => {
+      if (!currentFood) return;
+      const text = `今天就吃：${currentFood.name}！`;
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtnText.textContent = '已複製推薦餐點！';
+        setTimeout(() => {
+          copyBtnText.textContent = '複製結果文字';
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>
